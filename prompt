@@ -1,0 +1,3 @@
+Ich habe ein PCA9685 und die PCA9685-Arduino-Library.
+Schreibe mir den Code um 6 MG996R Servos aus zu lesen zur referenzierung und kalibrierung. Die Servos sind auf steckplatz 0 bis 6 auf dem PCA9685 angeschlossen sind. Das PCA9685 ist über 5v/ground und SCL  auf Analog5 und SDA auf Analog4. 
+Schreibe so dass ich später das ganze für meine Robotersteuerung nutzen kann mit z.B {90,90,90,90,90,90} als positionseingabe.
