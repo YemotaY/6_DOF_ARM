@@ -1,0 +1,63 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+// Instanziiere das PCA9685-Objekt
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+// Konstanten für Servoeinstellungen
+#define SERVOMIN  150 // Minimaler Pulswert
+#define SERVOMAX  600 // Maximaler Pulswert
+#define SERVO_FREQ 50 // Servofrequenz in Hz
+
+// Servo-Kanäle
+#define SERVO_0 0
+#define SERVO_1 1
+
+void setup() {
+  // Initialisiere die serielle Kommunikation
+  Serial.begin(9600);
+  Serial.println("PCA9685 Servo Controller wird initialisiert...");
+
+  // Initialisiere das PCA9685-Modul
+  pwm.begin();
+  pwm.setPWMFreq(SERVO_FREQ); // Setze die Frequenz auf 50 Hz
+
+  delay(10); // Kurze Verzögerung, damit das Modul hochfährt
+  Serial.println("PCA9685 bereit.");
+}
+
+// Funktion zum Setzen des Servo-Winkels (in Grad)
+void setServoAngle(uint8_t servo, float angle) {
+  // Begrenze den Winkel auf den Bereich von 0 bis 180 Grad
+  angle = constrain(angle, 0, 180);
+
+  // Berechne den Pulswert basierend auf dem Winkel
+  int pulseLength = map(angle, 0, 180, SERVOMIN, SERVOMAX);
+  pwm.setPWM(servo, 0, pulseLength);
+}
+
+void loop() {
+  // Bewege Servo 0 von 0 bis 180 Grad
+  for (float angle = 0; angle <= 180; angle += 1) {
+    setServoAngle(SERVO_0, angle);
+    delay(15); // Wartezeit zwischen den Bewegungen
+  }
+
+  // Bewege Servo 0 von 180 zurück zu 0 Grad
+  for (float angle = 180; angle >= 0; angle -= 1) {
+    setServoAngle(SERVO_0, angle);
+    delay(15);
+  }
+
+  // Bewege Servo 1 von 0 bis 180 Grad
+  for (float angle = 0; angle <= 180; angle += 1) {
+    setServoAngle(SERVO_1, angle);
+    delay(15);
+  }
+
+  // Bewege Servo 1 von 180 zurück zu 0 Grad
+  for (float angle = 180; angle >= 0; angle -= 1) {
+    setServoAngle(SERVO_1, angle);
+    delay(15);
+  }
+}
